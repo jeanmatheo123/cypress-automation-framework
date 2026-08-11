@@ -1,0 +1,17 @@
+{
+  "name": "cypress-automation-framework",
+  "version": "1.0.0",
+  "description": "End-to-end and API test suite for automationexercise.com, built with Cypress and TypeScript.",
+  "private": true,
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:run:ui": "cypress run --spec \"cypress/e2e/ui/**/*.cy.ts\"",
+    "cy:run:api": "cypress run --spec \"cypress/e2e/api/**/*.cy.ts\"",
+    "lint": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "cypress": "^13.17.0",
+    "typescript": "^5.6.3"
+  }
+}
