@@ -27,6 +27,11 @@ class CartPage {
     cy.contains("Proceed To Checkout").click();
     return this;
   }
+
+  assertGuestCheckoutPromptVisible() {
+    cy.get(".modal-content").should("contain.text", "Register / Login account to proceed on checkout");
+    return this;
+  }
 }
 
 export default new CartPage();

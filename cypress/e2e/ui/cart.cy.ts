@@ -21,4 +21,9 @@ describe("Cart management", () => {
     CartPage.removeProductByRow(0);
     CartPage.getRows().should("have.length", 1);
   });
+
+  it("prompts a guest to register or log in before checking out", () => {
+    CartPage.proceedToCheckout();
+    CartPage.assertGuestCheckoutPromptVisible();
+  });
 });
