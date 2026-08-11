@@ -51,6 +51,8 @@ No environment variables or secrets are required — everything runs against the
 
 GitHub Actions runs the full suite on every push to `main`, on pull requests, and once a week on a schedule (so a real change on the target site's side gets caught even without a code change here). Failure screenshots are uploaded as a build artifact.
 
+The run step retries the whole suite up to 3 times before failing the job. That's specifically for one class of problem: automationexercise.com sits behind Cloudflare, which occasionally challenges/rate-limits traffic from shared CI runner IP ranges regardless of whether the tests are correct. A real regression still fails every attempt identically; this just absorbs that one third-party-hosting quirk.
+
 ## Notes on design decisions
 
 - `retries.runMode` is set to 2 in `cypress.config.ts`. This is testing a live third-party site with ads and analytics scripts outside my control, so a small retry budget cuts down on noise from that without hiding a real regression (a genuine bug will still fail all 3 attempts).

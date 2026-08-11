@@ -6,6 +6,7 @@ on:
   pull_request:
   schedule:
     - cron: "0 6 * * 1"
+  workflow_dispatch:
 
 jobs:
   e2e:
@@ -25,9 +26,18 @@ jobs:
         run: npm run lint
 
       - name: Run Cypress
-        uses: cypress-io/github-action@v6
-        with:
-          browser: chrome
+        # automationexercise.com sits behind Cloudflare, which occasionally
+        # rate-limits/challenges traffic from shared CI runner IP ranges —
+        # unrelated to whether the tests themselves are correct. A short
+        # retry loop absorbs that without masking a real failure (a genuine
+        # bug fails all 3 attempts the same way).
+        run: |
+          for attempt in 1 2 3; do
+            npx cypress run --browser chrome && exit 0
+            echo "Attempt $attempt failed, retrying in 15s..."
+            sleep 15
+          done
+          exit 1
 
       - name: Upload failure screenshots
         if: failure()
